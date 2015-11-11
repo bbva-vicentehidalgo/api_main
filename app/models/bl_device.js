@@ -2,31 +2,31 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('bl_device', {
-    iddevice: {
-      type: DataTypes.INTEGER(11),
-      allowNull: false,
-      primaryKey: true
+    var bl_device =  sequelize.define('bl_device', {
+        iddevice: {
+            type: DataTypes.INTEGER(11),
+            allowNull: false,
+            primaryKey: true,
+            autoIncrement: true
+        },
+        operativeSystem: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        token: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        dateLastLogin: {
+            type: DataTypes.DATE,
+            allowNull: false
+        }
     },
-    fk_iduser: {
-      type: DataTypes.INTEGER(11),
-      allowNull: false
-    },
-    operativeSystem: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    token: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    dateCreated: {
-      type: DataTypes.DATE,
-      allowNull: false
-    },
-    dateLastLogin: {
-      type: DataTypes.DATE,
-      allowNull: false
-    }
-  });
+    {
+        associate: function(models){
+            bl_device.belongsTo(models.bl_user);
+        }
+    });
+
+    return bl_device;
 };

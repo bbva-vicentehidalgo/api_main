@@ -2,27 +2,25 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('bl_investment', {
-    idinvestment: {
-      type: DataTypes.INTEGER(11),
-      allowNull: false,
-      primaryKey: true
+    var bl_investment = sequelize.define('bl_investment', {
+        idinvestment: {
+            type: DataTypes.INTEGER(11),
+            allowNull: false,
+            primaryKey: true,
+            autoIncrement: true
+        },
+        amount: {
+            type: DataTypes.DOUBLE,
+            allowNull: false
+        }
     },
-    fk_iduser: {
-      type: DataTypes.INTEGER(11),
-      allowNull: false
-    },
-    fk_idcause: {
-      type: DataTypes.INTEGER(11),
-      allowNull: false
-    },
-    dateCreated: {
-      type: DataTypes.DATE,
-      allowNull: false
-    },
-    amount: {
-      type: 'DOUBLE',
-      allowNull: false
-    }
-  });
+    {
+        associate: function(models){
+            //VIC TODO
+            bl_investment.belongsTo(models.bl_user);
+            bl_investment.belongsTo(models.bl_cause);
+        }
+    });
+
+    return bl_investment;
 };

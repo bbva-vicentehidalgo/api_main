@@ -2,27 +2,28 @@
 /* jshint indent: 2 */
 
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('bl_notification', {
-    idnotification: {
-      type: DataTypes.INTEGER(11),
-      allowNull: false,
-      primaryKey: true
+    var bl_notification = sequelize.define('bl_notification', {
+        idnotification: {
+            type: DataTypes.INTEGER(11),
+            allowNull: false,
+            primaryKey: true,
+            autoIncrement: true
+        },
+        message: {
+            type: DataTypes.TEXT,
+            allowNull: false
+        },
+        dateSent: {
+            type: DataTypes.DATE,
+            allowNull: false
+        }
     },
-    fk_iduser: {
-      type: DataTypes.INTEGER(11),
-      allowNull: false
-    },
-    fk_iddevice: {
-      type: DataTypes.INTEGER(11),
-      allowNull: false
-    },
-    message: {
-      type: DataTypes.TEXT,
-      allowNull: false
-    },
-    dateSent: {
-      type: DataTypes.DATE,
-      allowNull: false
-    }
-  });
+    {
+        associate: function(models){
+            bl_notification.belongsTo(models.bl_user);
+            bl_notification.belongsTo(models.bl_device);
+        }
+    });
+
+    return bl_notification;
 };
