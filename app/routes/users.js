@@ -8,6 +8,7 @@ var passport = require('passport');
 module.exports = function(app) {
 // User Routes
 var users = require('../../app/controllers/users');
+var causes = require('../../app/controllers/causes');
 
 // User Routes
 app.get('/signin', users.signin);
@@ -24,6 +25,7 @@ app.post('/users/session', passport.authenticate('local', {
     failureFlash: true
 }), users.session);
 
+/*
 // Setting the facebook oauth routes
 app.get('/auth/facebook', passport.authenticate('facebook', {
     scope: ['email', 'user_about_me'],
@@ -55,8 +57,8 @@ app.get('/auth/google', passport.authenticate('google', {
 app.get('/auth/google/callback', passport.authenticate('google', {
     failureRedirect: '/signin'
 }), users.authCallback);
+*/
 
 // Finish with setting up the userId param
 app.param('userId', users.user);
 };
-
