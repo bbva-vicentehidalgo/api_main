@@ -9,6 +9,6 @@ wallets = require('../../app/controllers/wallets');
 module.exports = function(app) {
   // Causes Routes
   app.route('/wallets')
-  .get(wallets.getWallet);
+  .get(users.requiresLogin, wallets.hasAuthorization, wallets.getWallet);
 
 };

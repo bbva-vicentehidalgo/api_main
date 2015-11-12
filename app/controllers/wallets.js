@@ -11,7 +11,7 @@ var db = require('../../config/sequelize');
 */
 exports.getWallet = function(req, res) {
 
-  db.bl_wallet.findAll({where: {"blUserIduser": 1}}).then(function(wallets){
+  db.bl_wallet.findAll({include: [db.bl_user]}).then(function(wallets){
     return res.jsonp(wallets);
   }).catch(function(err){
     return res.render('error', {
@@ -19,5 +19,16 @@ exports.getWallet = function(req, res) {
       status: 500
     });
   });
-  
+
+};
+
+
+/**
+ * Wallet authorizations routing middleware
+ */
+exports.hasAuthorization = function(req, res, next) {
+    if (req.article.User.id !== req.user.id) {
+      return res.send(401, 'User is not authorized_2 hasAuthorization');
+    }
+    next();
 };

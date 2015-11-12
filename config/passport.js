@@ -2,11 +2,13 @@
 
 var passport = require('passport');
 var _ = require('lodash');
-// These are different types of authentication strategies that can be used with Passport. 
+// These are different types of authentication strategies that can be used with Passport.
 var LocalStrategy = require('passport-local').Strategy;
+/*
 var TwitterStrategy = require('passport-twitter').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var GoogleStrategy = require('passport-google').Strategy;
+*/
 var config = require('./config');
 var db = require('./sequelize');
 var winston = require('./winston');
@@ -31,10 +33,12 @@ passport.use(new LocalStrategy({
     passwordField: 'password'
   },
   function(email, password, done) {
-    db.User.find({ where: { email: email }}).then(function(user) {
+    db.bl_user.find({ where: { email: email }}).then(function(user) {
       if (!user) {
+        console.log("no existe el user");
         done(null, false, { message: 'Unknown user' });
       } else if (!user.authenticate(password)) {
+        console.log("no existe el pass");
         done(null, false, { message: 'Invalid password'});
       } else {
         winston.info('Login (local) : { id: ' + user.id + ', username: ' + user.username + ' }');
@@ -46,6 +50,7 @@ passport.use(new LocalStrategy({
   }
 ));
 
+/*
 //    Use twitter strategy
 passport.use(new TwitterStrategy({
         consumerKey: config.twitter.clientID,
@@ -53,7 +58,7 @@ passport.use(new TwitterStrategy({
         callbackURL: config.twitter.callbackURL
     },
     function(token, tokenSecret, profile, done) {
-        
+
         db.User.find({where: {twitterUserId: profile.id}}).then(function(user){
             if(!user){
                 db.User.create({
@@ -69,7 +74,7 @@ passport.use(new TwitterStrategy({
                 winston.info('Login (twitter) : { id: ' + user.id + ', username: ' + user.username + ' }');
                 done(null, user);
             }
-        
+
         }).catch(function(err){
             done(err, null);
         });
@@ -122,7 +127,7 @@ passport.use(new GoogleStrategy({
                 name: profile.displayName,
                 email: profile.emails[0].value,
                 username: profile.displayName.replace(/ /g,''),
-                openId: identifier, 
+                openId: identifier,
             }).then(function(u){
                 winston.info('New User (google) : { id: ' + u.id + ', username: ' + u.username + ' }');
                 done(null, u);
@@ -136,6 +141,6 @@ passport.use(new GoogleStrategy({
     });
   }
 ));
+*/
 
 module.exports = passport;
-
